@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 #
-# Add SCL environment in /var/spool/cron/asterisk if it isn't already setted
+# Add SCL environment in /var/spool/cron/asterisk if it isn't already set
 #
 
 # Open asterisk cron file if exists
