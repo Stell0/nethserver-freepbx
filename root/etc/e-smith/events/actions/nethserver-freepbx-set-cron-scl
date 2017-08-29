@@ -33,7 +33,7 @@ close $handle;
 if ($lines[0] ne 'PATH=/opt/rh/rh-php56/root/usr/bin:/opt/rh/rh-php56/root/usr/sbin${PATH:+:${PATH}}' or $lines[1] ne 'LD_LIBRARY_PATH=/opt/rh/rh-php56/root/usr/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}') {
 
     $OUT .= 'PATH=/opt/rh/rh-php56/root/usr/bin:/opt/rh/rh-php56/root/usr/sbin${PATH:+:${PATH}}'."\n";
-    $OUT .= 'LD_LIBRARY_PATH=/opt/rh/rh-php56/root/usr/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}'."\n";
+    $OUT .= 'LD_LIBRARY_PATH=/opt/rh/rh-php56/root/usr/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}'."\n\n";
     
     foreach my $line (@lines) {
         $OUT .= $line."\n";
@@ -43,6 +43,10 @@ if ($lines[0] ne 'PATH=/opt/rh/rh-php56/root/usr/bin:/opt/rh/rh-php56/root/usr/s
     open FILE, ">/var/spool/cron/asterisk" or die 'Can\'t open output file';
     print FILE $OUT;
     close FILE;
+
+    # Set asterisk as owner and 600 as permissions
+    system ("/bin/chown asterisk:asterisk /var/spool/cron/asterisk");
+    system ("/bin/chmod 600 /var/spool/cron/asterisk");
 }
 
 
