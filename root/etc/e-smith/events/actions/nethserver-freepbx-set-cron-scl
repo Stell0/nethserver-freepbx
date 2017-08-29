@@ -1,0 +1,28 @@
+#!/usr/bin/perl
+
+#
+# Add SCL environment in /var/spool/cron/asterisk if it isn't already setted
+#
+
+# Open asterisk cron file if exists
+open my $handle, '<', '/var/spool/cron/asterisk';
+chomp(my @lines = <$handle>);
+close $handle;
+
+# Check if SCL path is already configured
+if ($lines[0] ne 'PATH=/opt/rh/rh-php56/root/usr/bin:/opt/rh/rh-php56/root/usr/sbin${PATH:+:${PATH}}' or $lines[1] ne 'LD_LIBRARY_PATH=/opt/rh/rh-php56/root/usr/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}') {
+
+    $OUT .= 'PATH=/opt/rh/rh-php56/root/usr/bin:/opt/rh/rh-php56/root/usr/sbin${PATH:+:${PATH}}'."\n";
+    $OUT .= 'LD_LIBRARY_PATH=/opt/rh/rh-php56/root/usr/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}'."\n";
+    
+    foreach my $line (@lines) {
+        $OUT .= $line."\n";
+    }
+
+    # Write asterisk cron file
+    open FILE, ">/var/spool/cron/asterisk" or die 'Can\'t open output file';
+    print FILE $OUT;
+    close FILE;
+}
+
+
