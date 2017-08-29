@@ -30,10 +30,12 @@ chomp(my @lines = <$handle>);
 close $handle;
 
 # Check if SCL path is already configured
-if ($lines[0] ne 'PATH=/opt/rh/rh-php56/root/usr/bin:/opt/rh/rh-php56/root/usr/sbin${PATH:+:${PATH}}' or $lines[1] ne 'LD_LIBRARY_PATH=/opt/rh/rh-php56/root/usr/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}') {
+my $path = 'PATH=/opt/rh/rh-php56/root/usr/bin:/opt/rh/rh-php56/root/usr/sbin${PATH:+:${PATH}}';
+my $library_path = 'LD_LIBRARY_PATH=/opt/rh/rh-php56/root/usr/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}';
+if ($lines[0] ne $path or $lines[1] ne $library_path) {
 
-    $OUT .= 'PATH=/opt/rh/rh-php56/root/usr/bin:/opt/rh/rh-php56/root/usr/sbin${PATH:+:${PATH}}'."\n";
-    $OUT .= 'LD_LIBRARY_PATH=/opt/rh/rh-php56/root/usr/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}'."\n\n";
+    $OUT .= $path."\n";
+    $OUT .= $library_path."\n\n";
     
     foreach my $line (@lines) {
         $OUT .= $line."\n";
